@@ -6,6 +6,8 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from selenium.common.exceptions import WebDriverException,NoSuchElementException
 DEBUG_FAST = True #Set to False for normal runs
 
+def logprint(*args): print(*args) #For later modularity
+
 StartPage = "https://www.tine.no" #DRY
 
 #Sanity check: if we cannot access the tine.no page, abort testing
@@ -30,7 +32,7 @@ except WebDriverException:
 LinkTest_1 = ["TINE Partner",
               ["Industri", "Servering", "Nettbutikk"]]
 #Format: Linktest_N = [Link string, [array of words to find in target page]]
-#Second array can be a single word or empty [].
+#Inner array can be empty [] but must exist.
 LinkTest_2 = ["TINE Råvare",
               ["Markedsordning", "Regulering", "Prognoser"]]
 LinkTest_3 = ["TINE Handel",
@@ -88,9 +90,12 @@ for TestSet in TestSets:
         print("Couldn't find website, error in testing",str(TestSet))
     except NoSuchElementException:
         print("Couldn't find page element, error in testing",str(TestSet))
-    
+    pass
 
-
+#Pannekaketesten!
+try:
+    with webdriver.Firefox() as driver:
+        driver.get("https://www.tine.no/oppskrifter")
 
 #Future: potential test improvements-
 #Loop over tests of subpages (In progress)
